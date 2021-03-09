@@ -1,7 +1,13 @@
 use rand::prelude::*;
 
 fn main() {
-    println!("Hello, world!");
+    let mut test_runner = TestRunner::new(vec![
+        Box::from(WinterBooking),
+        Box::from(SummerBooking),
+    ]);
+
+    let results = test_runner.compare_strategies(1_000_000);
+    println!("{:#?}", results);
 }
 
 struct TestRunner {
