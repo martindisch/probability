@@ -33,18 +33,18 @@ impl TestRunner {
 
         for _ in 0..runs {
             let lucky: bool = self.rng.gen();
-            for (y, strategy) in self.booking_strategies.iter().enumerate() {
+            for (i, strategy) in self.booking_strategies.iter().enumerate() {
                 let cost = strategy.calculate_cost(lucky);
-                cost_sums[y] += cost;
+                cost_sums[i] += cost;
             }
         }
 
         cost_sums
             .iter()
             .enumerate()
-            .map(|(i, sum)| TestResult {
+            .map(|(i, &sum)| TestResult {
                 strategy_name: self.booking_strategies[i].name(),
-                average_cost: f64::from(*sum) / f64::from(runs),
+                average_cost: f64::from(sum) / f64::from(runs),
             })
             .collect()
     }
