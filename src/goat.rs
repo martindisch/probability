@@ -32,3 +32,35 @@ enum Content {
     Goat,
     Car,
 }
+
+trait Contestant {
+    /// Returns the index of the first chosen door (0, 1, 2).
+    fn first_choice(&self) -> usize;
+
+    /// Returns whether contestant changes selection after reveal.
+    fn switch_door(&self) -> bool;
+}
+
+struct SwitchingContestant;
+
+impl Contestant for SwitchingContestant {
+    fn first_choice(&self) -> usize {
+        (0..3).choose(&mut rand::thread_rng()).unwrap()
+    }
+
+    fn switch_door(&self) -> bool {
+        true
+    }
+}
+
+struct NonSwitchingContestant;
+
+impl Contestant for NonSwitchingContestant {
+    fn first_choice(&self) -> usize {
+        (0..3).choose(&mut rand::thread_rng()).unwrap()
+    }
+
+    fn switch_door(&self) -> bool {
+        false
+    }
+}
