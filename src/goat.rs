@@ -39,6 +39,9 @@ trait Contestant {
 
     /// Returns whether contestant changes selection after reveal.
     fn switch_door(&self) -> bool;
+
+    /// Returns the name of this contestant strategy.
+    fn name(&self) -> &'static str;
 }
 
 struct SwitchingContestant;
@@ -51,6 +54,10 @@ impl Contestant for SwitchingContestant {
     fn switch_door(&self) -> bool {
         true
     }
+
+    fn name(&self) -> &'static str {
+        "Switching contestant"
+    }
 }
 
 struct NonSwitchingContestant;
@@ -62,5 +69,9 @@ impl Contestant for NonSwitchingContestant {
 
     fn switch_door(&self) -> bool {
         false
+    }
+
+    fn name(&self) -> &'static str {
+        "Non-switching contestant"
     }
 }
