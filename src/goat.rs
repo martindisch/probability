@@ -35,15 +35,14 @@ impl TestRunner {
                 let first_choice = contestant.first_choice();
 
                 // Open another door containing a goat
-                let door_to_open = match first_choice {
-                    0 if stage.doors[1] == Door::Goat => 1,
-                    0 => 2,
-                    1 if stage.doors[0] == Door::Goat => 0,
-                    1 => 2,
-                    2 if stage.doors[0] == Door::Goat => 0,
-                    2 => 1,
-                    _ => unreachable!(),
-                };
+                let door_to_open = stage
+                    .doors
+                    .iter()
+                    .enumerate()
+                    .filter(|(i, &c)| *i != first_choice && c == Door::Goat)
+                    .map(|(i, _)| i)
+                    .next()
+                    .unwrap();
 
                 // Let contestant make their final choice
                 let final_choice = match (
