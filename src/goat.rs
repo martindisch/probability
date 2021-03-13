@@ -45,19 +45,12 @@ impl TestRunner {
                     .unwrap();
 
                 // Let contestant make their final choice
-                let final_choice = match (
-                    contestant.switch_door(),
-                    first_choice,
-                    door_to_open,
-                ) {
-                    (false, _, _) => first_choice,
-                    (true, 0, 1) => 2,
-                    (true, 0, 2) => 1,
-                    (true, 1, 0) => 2,
-                    (true, 1, 2) => 0,
-                    (true, 2, 0) => 1,
-                    (true, 2, 1) => 0,
-                    _ => unreachable!(),
+                let final_choice = match contestant.switch_door() {
+                    true => (0..3)
+                        .filter(|&i| i != first_choice && i != door_to_open)
+                        .next()
+                        .unwrap(),
+                    false => first_choice,
                 };
 
                 // Determine result
