@@ -28,25 +28,22 @@ impl TestRunner {
         let mut wins: Vec<u32> = vec![0; self.contestants.len()];
 
         for _ in 0..runs {
-            let original_stage = Stage::new();
+            let stage = Stage::new();
 
             for (i, contestant) in self.contestants.iter().enumerate() {
-                let mut stage = original_stage;
-
                 // Let contestant make their first choice
                 let first_choice = contestant.first_choice();
 
                 // Open another door containing a goat
                 let door_to_open = match first_choice {
-                    0 if stage.doors[1] == Door::Closed(Content::Goat) => 1,
+                    0 if stage.doors[1] == Door::Goat => 1,
                     0 => 2,
-                    1 if stage.doors[0] == Door::Closed(Content::Goat) => 0,
+                    1 if stage.doors[0] == Door::Goat => 0,
                     1 => 2,
-                    2 if stage.doors[0] == Door::Closed(Content::Goat) => 0,
+                    2 if stage.doors[0] == Door::Goat => 0,
                     2 => 1,
                     _ => unreachable!(),
                 };
-                stage.doors[door_to_open] = Door::Open(Content::Goat);
 
                 // Let contestant make their final choice
                 let final_choice = match (
@@ -65,7 +62,7 @@ impl TestRunner {
                 };
 
                 // Determine result
-                if stage.doors[final_choice] == Door::Closed(Content::Car) {
+                if stage.doors[final_choice] == Door::Car {
                     wins[i] += 1;
                 }
             }
@@ -88,32 +85,24 @@ struct TestResult {
 }
 
 /// The stage with 3 doors.
-#[derive(Clone, Copy)]
 struct Stage {
     doors: [Door; 3],
 }
 
 impl Stage {
     fn new() -> Self {
-        let mut doors = [Door::Closed(Content::Goat); 3];
+        let mut doors = [Door::Goat; 3];
 
         let car_door = (0..3).choose(&mut rand::thread_rng()).unwrap();
-        doors[car_door] = Door::Closed(Content::Car);
+        doors[car_door] = Door::Car;
 
         Self { doors }
     }
 }
 
-/// A door on the stage.
-#[derive(Clone, Copy, PartialEq)]
-enum Door {
-    Closed(Content),
-    Open(Content),
-}
-
 /// The content behind a door.
 #[derive(Clone, Copy, PartialEq)]
-enum Content {
+enum Door {
     Goat,
     Car,
 }
