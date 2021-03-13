@@ -2,6 +2,6 @@ mod booking;
 mod goat;
 
 fn main() {
-    // booking::run();
+    booking::run();
     goat::run();
 }
