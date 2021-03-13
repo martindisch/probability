@@ -39,16 +39,14 @@ impl TestRunner {
                     .doors
                     .iter()
                     .enumerate()
-                    .filter(|(i, &c)| *i != first_choice && c == Door::Goat)
+                    .find(|(i, &c)| *i != first_choice && c == Door::Goat)
                     .map(|(i, _)| i)
-                    .next()
                     .unwrap();
 
                 // Let contestant make their final choice
                 let final_choice = match contestant.switch_door() {
                     true => (0..3)
-                        .filter(|&i| i != first_choice && i != door_to_open)
-                        .next()
+                        .find(|&i| i != first_choice && i != door_to_open)
                         .unwrap(),
                     false => first_choice,
                 };
